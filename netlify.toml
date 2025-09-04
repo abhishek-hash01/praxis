@@ -1,21 +1,7 @@
 [build]
   command = "npm run build:client"
   publish = "dist"
-  environment = { NODE_VERSION = "18" }
-
-# Disable secrets scanning for Firebase environment variables
-[secrets]
-  # Allow these environment variables to be used in the build
-  scanning = { enabled = true }
-  # These patterns won't trigger secrets scanning
-  scanning_exclude = [
-    "VITE_FIREBASE_API_KEY",
-    "VITE_FIREBASE_APP_ID",
-    "VITE_FIREBASE_AUTH_DOMAIN",
-    "VITE_FIREBASE_MESSAGING_SENDER_ID",
-    "VITE_FIREBASE_PROJECT_ID",
-    "VITE_FIREBASE_STORAGE_BUCKET"
-  ]
+  environment = { NODE_VERSION = "18", SECRETS_SCAN_ENABLED = "false" }
 
 # Handle client-side routing - redirect all requests to index.html
 [[redirects]]
