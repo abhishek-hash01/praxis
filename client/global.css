@@ -139,9 +139,33 @@ html {
   .btn-primary {
     @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium text-white transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring;
     background: linear-gradient(135deg, hsl(var(--brand-green)) 0%, hsl(var(--brand-blue)) 100%);
+    /* Mobile touch optimization */
+    @apply min-h-[44px] touch-manipulation;
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium text-white/90 hover:text-white transition border border-white/10 backdrop-blur-xl bg-white/5;
+    /* Mobile touch optimization */
+    @apply min-h-[44px] touch-manipulation;
+  }
+  
+  /* Mobile-specific utilities */
+  .mobile-scroll {
+    @apply overflow-x-auto scrollbar-hide;
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  .mobile-tap {
+    @apply touch-manipulation;
+    -webkit-tap-highlight-color: transparent;
+  }
+  
+  /* Safe area padding for mobile devices */
+  .pb-safe {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .pt-safe {
+    padding-top: env(safe-area-inset-top);
   }
 }
 

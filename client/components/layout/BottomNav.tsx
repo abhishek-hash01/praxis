@@ -41,23 +41,29 @@ export default function BottomNav() {
   }, [currentUser]);
 
   return (
-    <nav className="fixed bottom-0 left-0 right-0 bg-black/80 backdrop-blur-xl border-t border-white/10 z-50 pb-safe">
+    <nav className="fixed bottom-0 left-0 right-0 bg-black/90 backdrop-blur-xl border-t border-white/10 z-50 pb-safe">
       <div className="mx-auto max-w-md grid grid-cols-4">
         {items.map(({ to, label, icon: Icon }) => {
           const active = pathname === to || pathname.startsWith(to + '/');
           const isChat = to === '/chat';
           return (
-            <Link key={`${to}-${label}`} to={to} className="relative group flex flex-col items-center justify-center py-2 sm:py-3 text-xs">
-              {active && <span className="absolute top-0 h-0.5 sm:h-1 w-6 sm:w-8 rounded-full bg-praxis-green/70" />}
-              <div className="relative">
-                <Icon className={`h-4 w-4 sm:h-5 sm:w-5 transition ${active ? "text-praxis-green" : "text-white/70 group-hover:text-white"}`} />
+            <Link 
+              key={`${to}-${label}`} 
+              to={to} 
+              className="relative group flex flex-col items-center justify-center py-3 sm:py-3 text-xs mobile-tap min-h-[60px] sm:min-h-[64px]"
+            >
+              {active && <span className="absolute top-1 h-0.5 sm:h-1 w-6 sm:w-8 rounded-full bg-praxis-green" />}
+              <div className="relative mb-1">
+                <Icon className={`h-5 w-5 sm:h-5 sm:w-5 transition ${active ? "text-praxis-green" : "text-white/70 group-hover:text-white"}`} />
                 {isChat && unreadCount > 0 && (
-                  <div className="absolute -top-1 -right-1 h-3.5 w-3.5 sm:h-4 sm:w-4 rounded-full bg-praxis-green flex items-center justify-center">
-                    <span className="text-[9px] sm:text-[10px] font-bold text-black">{unreadCount > 9 ? '9+' : unreadCount}</span>
+                  <div className="absolute -top-1.5 -right-1.5 h-4 w-4 sm:h-4 sm:w-4 rounded-full bg-praxis-green flex items-center justify-center">
+                    <span className="text-[10px] sm:text-[10px] font-bold text-black">{unreadCount > 9 ? '9+' : unreadCount}</span>
                   </div>
                 )}
               </div>
-              <span className={`transition ${active ? "text-praxis-green" : "text-white/60 group-hover:text-white"}`}>{label}</span>
+              <span className={`transition text-[11px] sm:text-xs ${active ? "text-praxis-green font-medium" : "text-white/60 group-hover:text-white"}`}>
+                {label}
+              </span>
             </Link>
           );
         })}

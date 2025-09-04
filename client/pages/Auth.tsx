@@ -164,26 +164,26 @@ export default function Auth() {
   return (
     <div className="min-h-screen flex flex-col">
       <SiteHeader />
-      <div className="flex-1 flex items-center justify-center px-4 py-8">
-        <div className="w-full max-w-md glass-card p-6 sm:p-8">
-          <div className="text-center mb-6">
-            <div className="h-12 w-12 sm:h-16 sm:w-16 rounded-2xl bg-gradient-to-br from-praxis-purple to-praxis-blue mx-auto mb-4" />
-            <h1 className="font-heading text-xl sm:text-2xl mb-2">
+      <div className="flex-1 flex items-center justify-center px-3 py-4 sm:px-4 sm:py-8">
+        <div className="w-full max-w-md glass-card p-4 sm:p-8">
+          <div className="text-center mb-4 sm:mb-6">
+            <div className="h-10 w-10 sm:h-16 sm:w-16 rounded-2xl bg-gradient-to-br from-praxis-purple to-praxis-blue mx-auto mb-3 sm:mb-4" />
+            <h1 className="font-heading text-lg sm:text-2xl mb-2">
               {mode === "signup" ? "Create your account" : "Welcome back"}
             </h1>
             <p className="text-white/70 text-sm">Connect, learn, and grow together</p>
           </div>
-          <form className="space-y-4" onSubmit={handleSubmit}>
+          <form className="space-y-3 sm:space-y-4" onSubmit={handleSubmit}>
             {mode === "signup" && (
               <>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Name</label>
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple"
+                      className="w-full px-3 py-3 sm:px-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple mobile-tap min-h-[44px]"
                       placeholder="Your full name"
                       required
                     />
@@ -194,7 +194,7 @@ export default function Auth() {
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple"
+                      className="w-full px-3 py-3 sm:px-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple mobile-tap min-h-[44px]"
                       placeholder="your@email.com"
                       required
                     />
@@ -205,30 +205,32 @@ export default function Auth() {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple"
+                      className="w-full px-3 py-3 sm:px-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple mobile-tap min-h-[44px]"
                       placeholder="Create a password"
                       required
                     />
                   </div>
-                  <SkillSelector
-                    selectedSkills={skills}
-                    onSkillsChange={setSkills}
-                    label="Skills you can teach"
-                    placeholder="Type to search skills..."
-                    maxSkills={8}
-                  />
-                  <SkillSelector
-                    selectedSkills={wantsToLearn}
-                    onSkillsChange={setWantsToLearn}
-                    label="What you want to learn"
-                    placeholder="Type to search skills..."
-                    maxSkills={8}
-                  />
+                  <div className="space-y-3">
+                    <SkillSelector
+                      selectedSkills={skills}
+                      onSkillsChange={setSkills}
+                      label="Skills you can teach"
+                      placeholder="Type to search skills..."
+                      maxSkills={8}
+                    />
+                    <SkillSelector
+                      selectedSkills={wantsToLearn}
+                      onSkillsChange={setWantsToLearn}
+                      label="What you want to learn"
+                      placeholder="Type to search skills..."
+                      maxSkills={8}
+                    />
+                  </div>
                 </div>
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full btn-primary py-3 disabled:opacity-50"
+                  className="w-full btn-primary py-3 disabled:opacity-50 mobile-tap"
                 >
                   {loading ? "Creating account..." : "Sign Up"}
                 </button>
@@ -236,14 +238,14 @@ export default function Auth() {
             )}
             {mode === "login" && (
               <>
-                <div className="space-y-4">
+                <div className="space-y-3 sm:space-y-4">
                   <div>
                     <label className="block text-sm font-medium mb-2">Email</label>
                     <input
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple"
+                      className="w-full px-3 py-3 sm:px-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple mobile-tap min-h-[44px]"
                       placeholder="your@email.com"
                       required
                     />
@@ -254,7 +256,7 @@ export default function Auth() {
                       type="password"
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
-                      className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple"
+                      className="w-full px-3 py-3 sm:px-4 bg-white/5 border border-white/10 rounded-xl text-white placeholder-white/50 focus:outline-none focus:border-praxis-purple mobile-tap min-h-[44px]"
                       placeholder="Your password"
                       required
                     />
@@ -263,7 +265,7 @@ export default function Auth() {
                 <button
                   type="submit"
                   disabled={loading}
-                  className="w-full btn-primary py-3 disabled:opacity-50"
+                  className="w-full btn-primary py-3 disabled:opacity-50 mobile-tap"
                 >
                   {loading ? "Signing in..." : "Sign In"}
                 </button>
@@ -280,21 +282,21 @@ export default function Auth() {
             </div>
           </div>
           
-          <div className="mt-6 text-center">
+          <div className="mt-4 sm:mt-6 text-center">
             <button
               onClick={handleGoogleLogin}
               disabled={loading}
-              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-black rounded-xl font-medium hover:bg-white/90 transition-colors disabled:opacity-50"
+              className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-black rounded-xl font-medium hover:bg-white/90 transition-colors disabled:opacity-50 mobile-tap min-h-[44px]"
             >
-              <div className="h-5 w-5 bg-gradient-to-br from-red-500 to-yellow-500 rounded" />
-              Continue with Google
+              <div className="h-4 w-4 sm:h-5 sm:w-5 bg-gradient-to-br from-red-500 to-yellow-500 rounded" />
+              <span className="text-sm sm:text-base">Continue with Google</span>
             </button>
           </div>
 
-          <div className="mt-6 text-center">
+          <div className="mt-4 sm:mt-6 text-center">
             <button
               onClick={() => setMode(mode === "signup" ? "login" : "signup")}
-              className="text-praxis-blue hover:text-praxis-green transition-colors"
+              className="text-praxis-blue hover:text-praxis-green transition-colors text-sm sm:text-base mobile-tap py-2"
             >
               {mode === "signup" ? "Already have an account? Sign in" : "Don't have an account? Sign up"}
             </button>
