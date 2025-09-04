@@ -150,8 +150,15 @@ html {
   
   /* Mobile-specific utilities */
   .mobile-scroll {
-    @apply overflow-x-auto scrollbar-hide;
+    @apply overflow-x-auto;
     -webkit-overflow-scrolling: touch;
+    /* Hide scrollbar for Chrome, Safari and Opera */
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE and Edge */
+  }
+  
+  .mobile-scroll::-webkit-scrollbar {
+    display: none;
   }
   
   .mobile-tap {
