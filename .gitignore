@@ -15,6 +15,7 @@ dist-ssr
 .env
 .env.backup
 .npmrc
+.firebaserc
 
 # Editor directories and files
 .vscode/*
