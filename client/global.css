@@ -1,0 +1,152 @@
+/** @import must precede all other statements */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap");
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Smooth scroll behavior */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Smooth scrolling for all scrollable elements */
+* {
+  scroll-behavior: smooth;
+}
+
+@layer base {
+  /**
+   * Tailwind CSS theme
+   * tailwind.config.ts expects the following color variables to be expressed as HSL values.
+   * Values below implement Praxis brand in dark theme with glassmorphism.
+  */
+  :root {
+    /* Light theme */
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 10%;
+
+    --card: 0 0% 100%;
+    --card-foreground: 222.2 84% 10%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 222.2 84% 10%;
+
+    --primary: 180 100% 35%; /* Vibrant teal */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 20% 97%;
+    --secondary-foreground: 222.2 47.4% 15%;
+
+    --muted: 220 15% 95%;
+    --muted-foreground: 215.4 16.3% 46.9%;
+
+    --accent: 280 80% 60%; /* Vibrant purple */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 13% 91%;
+    --input: 220 13% 91%;
+    --ring: 180 100% 30%;
+
+    --radius: 0.8rem;
+
+    /* Sidebar */
+    --sidebar-background: 0 0% 98%;
+    --sidebar-foreground: 222.2 84% 15%;
+    --sidebar-primary: 180 100% 35%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 20% 97%;
+    --sidebar-accent-foreground: 222.2 84% 15%;
+    --sidebar-border: 220 13% 91%;
+    --sidebar-ring: 180 100% 30%;
+
+    /* Brand colors */
+    --brand-teal: 180 100% 35%;
+    --brand-purple: 280 80% 60%;
+    --brand-blue: 210 100% 50%;
+  }
+
+  .dark {
+    --background: 240 10% 5%;
+    --foreground: 210 30% 98%;
+
+    --card: 240 10% 7%;
+    --card-foreground: 210 30% 98%;
+
+    --popover: 240 10% 7%;
+    --popover-foreground: 210 30% 98%;
+
+    --primary: 180 100% 40%; /* Brighter teal for dark mode */
+    --primary-foreground: 0 0% 100%;
+
+    --secondary: 220 15% 15%;
+    --secondary-foreground: 210 30% 98%;
+
+    --muted: 220 10% 18%;
+    --muted-foreground: 215 20% 70%;
+
+    --accent: 280 80% 65%; /* Slightly brighter purple */
+    --accent-foreground: 0 0% 100%;
+
+    --destructive: 0 84% 55%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 220 10% 22%;
+    --input: 220 10% 22%;
+    --ring: 180 100% 40%;
+
+    --sidebar-background: 240 10% 6%;
+    --sidebar-foreground: 210 40% 96%;
+    --sidebar-primary: 231 48% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 220 8% 16%;
+    --sidebar-accent-foreground: 210 40% 96%;
+    --sidebar-border: 220 8% 18%;
+    --sidebar-ring: 231 48% 48%;
+
+    --brand-purple: 282 43% 30%;
+    --brand-blue: 231 48% 48%;
+    --brand-green: 145 63% 49%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border antialiased;
+  }
+
+  body {
+    @apply bg-background text-foreground font-sans;
+    background-image:
+      radial-gradient(1200px 600px at 80% -10%, hsla(var(--brand-blue), 0.25), transparent 60%),
+      radial-gradient(800px 500px at -10% 20%, hsla(var(--brand-purple), 0.25), transparent 60%),
+      linear-gradient(180deg, hsl(240 10% 6%), hsl(240 10% 6%));
+    background-attachment: fixed;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+}
+
+@layer components {
+  .glass-card {
+    @apply bg-white/10 backdrop-blur-xl border border-white/10 shadow-xl rounded-2xl;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium text-white transition focus:outline-none focus-visible:ring-2 focus-visible:ring-ring;
+    background: linear-gradient(135deg, hsl(var(--brand-green)) 0%, hsl(var(--brand-blue)) 100%);
+  }
+  .btn-secondary {
+    @apply inline-flex items-center justify-center rounded-xl px-5 py-3 font-medium text-white/90 hover:text-white transition border border-white/10 backdrop-blur-xl bg-white/5;
+  }
+}
+
+@layer utilities {
+  .font-heading {
+    font-family: "Poppins", system-ui, -apple-system, Segoe UI, Roboto, Inter, "Helvetica Neue", Arial, "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  }
+}

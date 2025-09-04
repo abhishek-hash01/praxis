@@ -1,0 +1,26 @@
+{
+  "name": "Praxis - Skill Exchange Platform",
+  "short_name": "Praxis",
+  "description": "Connect, learn & grow through skill exchange",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b0b10",
+  "theme_color": "#0b0b10",
+  "orientation": "portrait-primary",
+  "icons": [
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png"
+    },
+    {
+      "src": "/logo.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "categories": ["education", "social", "productivity"],
+  "lang": "en",
+  "dir": "ltr"
+}
