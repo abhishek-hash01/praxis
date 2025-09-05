@@ -226,69 +226,84 @@ export default function Chat() {
   if (!userId) {
     return (
       <LoggedInLayout>
-        <div className="container py-8 max-w-2xl">
-          <div className="mb-6">
-            <h1 className="font-heading text-2xl mb-2">Messages</h1>
+        <div className="flex flex-col h-screen">
+          {/* Header */}
+          <div className="sticky top-[48px] sm:top-[56px] z-30 glass-card mx-4 mt-4 p-4 sm:p-6 backdrop-blur-xl bg-black/80 border border-white/10">
+            <h1 className="font-heading text-xl sm:text-2xl mb-2">Messages</h1>
             <p className="text-white/70 text-sm">Chat with your connected skill partners</p>
           </div>
           
-          {loading ? (
-            <div className="text-center py-8">
-              <div className="text-white/50">Loading your chats...</div>
-            </div>
-          ) : chatSummaries.length > 0 ? (
-            <div className="grid gap-3 sm:gap-4">
-              {connectedUsers.map((user) => {
-                const lastMessage = chatSummaries.find((chat) => chat.userId === user.id)?.lastMessage;
-                const unreadCount = chatSummaries.find((chat) => chat.userId === user.id)?.unreadCount;
-                
-                return (
-                  <div
-                    key={user.id}
-                    onClick={() => navigate(`/chat/${user.id}`)}
-                    className="glass-card p-3 sm:p-4 flex items-center gap-3 sm:gap-4 cursor-pointer hover:bg-white/5 transition-colors"
-                  >
-                    <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-white font-bold text-sm sm:text-base">
-                      {user.name.charAt(0).toUpperCase()}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex items-center gap-2">
-                        <div className="font-heading text-base sm:text-lg truncate">{user.name}</div>
-                        <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-praxis-green flex-shrink-0"></div>
-                        <div className="text-xs text-praxis-green hidden sm:block">Online</div>
-                      </div>
-                      <div className="text-sm text-white/60 truncate">
-                        {lastMessage ? lastMessage.text : "Start a conversation"}
-                      </div>
-                    </div>
-                    <div className="flex flex-col items-end gap-1 flex-shrink-0">
-                      <div className="text-xs text-white/40">
-                        {lastMessage ? new Date(lastMessage.sentAt.toDate ? lastMessage.sentAt.toDate() : lastMessage.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ""}
-                      </div>
-                      {unreadCount > 0 && (
-                        <div className="bg-praxis-green text-black text-xs px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-full font-bold min-w-[18px] sm:min-w-[20px] text-center">
-                          {unreadCount > 99 ? '99+' : unreadCount}
-                        </div>
-                      )}
-                    </div>
+          {/* Chat List */}
+          <div className="flex-1 px-4 pt-4 pb-32 overflow-hidden">
+            <div className="h-full overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
+          
+              {loading ? (
+                <div className="flex items-center justify-center py-12">
+                  <div className="glass-card p-6 text-center">
+                    <div className="animate-spin h-8 w-8 border-2 border-praxis-blue border-t-transparent rounded-full mx-auto mb-3"></div>
+                    <div className="text-white/70 text-sm">Loading your chats...</div>
                   </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="text-center py-12">
-              <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
-                <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-white font-bold text-sm sm:text-base">
-                  💬
                 </div>
-                <div>
-                  <h1 className="font-heading text-xl sm:text-2xl">Chat</h1>
-                  <p className="text-white/70 text-xs sm:text-sm">Connect with your skill matches</p>
+              ) : chatSummaries.length > 0 ? (
+                <div className="space-y-2 sm:space-y-3">
+                  {connectedUsers.map((user) => {
+                    const lastMessage = chatSummaries.find((chat) => chat.userId === user.id)?.lastMessage;
+                    const unreadCount = chatSummaries.find((chat) => chat.userId === user.id)?.unreadCount;
+                    
+                    return (
+                      <div
+                        key={user.id}
+                        onClick={() => navigate(`/chat/${user.id}`)}
+                        className="glass-card p-4 sm:p-5 flex items-center gap-4 cursor-pointer hover:bg-white/5 hover:scale-[1.02] transition-all duration-200 border border-white/10"
+                      >
+                        <div className="relative">
+                          <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-white font-bold text-lg">
+                            {user.name.charAt(0).toUpperCase()}
+                          </div>
+                          <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-praxis-green border-2 border-black"></div>
+                        </div>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 mb-1">
+                            <div className="font-heading text-lg truncate">{user.name}</div>
+                            <div className="text-xs text-praxis-green font-medium">Online</div>
+                          </div>
+                          <div className="text-sm text-white/60 truncate leading-relaxed">
+                            {lastMessage ? lastMessage.text : "Start a conversation"}
+                          </div>
+                        </div>
+                        <div className="flex flex-col items-end gap-2 flex-shrink-0">
+                          <div className="text-xs text-white/40">
+                            {lastMessage ? new Date(lastMessage.sentAt.toDate ? lastMessage.sentAt.toDate() : lastMessage.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ""}
+                          </div>
+                          {unreadCount > 0 && (
+                            <div className="bg-gradient-to-r from-praxis-blue to-praxis-green text-white text-xs px-2 py-1 rounded-full font-bold min-w-[20px] text-center shadow-lg">
+                              {unreadCount > 99 ? '99+' : unreadCount}
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })}
                 </div>
-              </div>
-              <p className="text-white/70 text-sm">Connect with other users on the Discover page to start chatting!</p>
+              ) : (
+                <div className="flex items-center justify-center py-12">
+                  <div className="glass-card p-8 text-center max-w-md border border-white/10">
+                    <div className="h-16 w-16 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-3xl mx-auto mb-4">
+                      💬
+                    </div>
+                    <h3 className="font-heading text-xl mb-2">No Conversations Yet</h3>
+                    <p className="text-white/70 text-sm mb-4">Connect with other users on the Discover page to start chatting!</p>
+                    <button 
+                      onClick={() => navigate('/discover')}
+                      className="btn-primary px-4 py-2 text-sm"
+                    >
+                      Find Connections
+                    </button>
+                  </div>
+                </div>
+              )}
             </div>
-          )}
+          </div>
         </div>
       </LoggedInLayout>
     );
@@ -297,9 +312,10 @@ export default function Chat() {
   // Individual chat view
   return (
     <LoggedInLayout>
-      <div className="container py-4 px-4 sm:py-8 max-w-2xl">
-        <div className="glass-card p-4 sticky top-0 mb-4 backdrop-blur-xl bg-black/60">
-          <div className="flex items-center gap-3 sm:gap-4 mb-4 sm:mb-6">
+      <div className="flex flex-col h-screen">
+        {/* Fixed Header */}
+        <div className="sticky top-[48px] sm:top-[56px] z-30 glass-card mx-4 mt-4 p-4 backdrop-blur-xl bg-black/80 border border-white/10">
+          <div className="flex items-center gap-3 sm:gap-4">
             <button 
               onClick={() => navigate('/chat')}
               className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
@@ -318,7 +334,10 @@ export default function Chat() {
             </div>
           </div>
         </div>
-        <div ref={listRef} className="space-y-2 sm:space-y-3 max-h-[50vh] sm:max-h-[60vh] overflow-y-auto pr-1">
+        
+        {/* Chat Messages Area */}
+        <div className="flex-1 px-4 pt-4 pb-32 overflow-hidden">
+          <div ref={listRef} className="h-full space-y-2 sm:space-y-3 overflow-y-auto pr-1 scrollbar-thin scrollbar-thumb-white/20 scrollbar-track-transparent">
           {connectionStatus === 'connected' ? (
             messages.length > 0 ? messages.map((m, index) => {
               const mine = m.fromUserId === currentUser?.uid;
@@ -337,8 +356,8 @@ export default function Chat() {
                     
                     <div className={`px-3 py-2 sm:px-4 sm:py-3 rounded-2xl border transition-all duration-200 hover:scale-[1.02] ${
                       mine 
-                        ? "bg-gradient-to-br from-praxis-blue/40 to-praxis-green/40 border-praxis-green/20 shadow-lg" 
-                        : "bg-white/10 border-white/10 backdrop-blur-sm"
+                        ? "bg-gradient-to-br from-praxis-blue/50 to-praxis-green/50 border-praxis-green/30 shadow-lg" 
+                        : "bg-white/8 border-white/20 backdrop-blur-sm"
                     }`}>
                       <div className="text-sm leading-relaxed break-words">{m.text}</div>
                       <div className={`text-[10px] sm:text-xs mt-1 flex items-center gap-1 ${
@@ -382,8 +401,8 @@ export default function Chat() {
               </div>
             </div>
           )}
+          </div>
         </div>
-        <div className="h-24" />
         {connectionStatus === 'connected' && (
           <form
             onSubmit={async (e) => {
@@ -409,9 +428,9 @@ export default function Chat() {
                 console.error("Error sending message:", error);
               }
             }}
-            className="fixed z-50 bottom-[76px] left-0 right-0 md:left-1/2 md:-translate-x-1/2 md:w-[640px] px-4"
+            className="fixed z-50 bottom-[76px] left-0 right-0 px-4 max-w-2xl mx-auto"
           >
-            <div className="glass-card flex items-center gap-3 p-3 focus-within:ring-2 focus-within:ring-praxis-blue/50 transition-all duration-200">
+            <div className="glass-card flex items-center gap-3 p-3 focus-within:ring-2 focus-within:ring-praxis-blue/50 transition-all duration-200 border border-white/20 bg-black/60 backdrop-blur-xl">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
