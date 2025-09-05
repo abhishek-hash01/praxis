@@ -12,6 +12,8 @@ import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
+  getRedirectResult,
 } from "firebase/auth";
 import { doc, setDoc, getDoc, getFirestore } from "firebase/firestore";
 import { auth } from "../lib/firebase";
@@ -26,6 +28,7 @@ export default function Auth() {
   const [skills, setSkills] = useState<string[]>([]);
   const [wantsToLearn, setWantsToLearn] = useState<string[]>([]);
   const [loading, setLoading] = useState(false);
+  const [isCheckingRedirect, setIsCheckingRedirect] = useState(true);
 
   const { currentUser } = useAuth();
   const nav = useNavigate();
@@ -35,6 +38,54 @@ export default function Auth() {
       nav("/dashboard");
     }
   }, [currentUser, nav]);
+
+  // Check for redirect result on component mount
+  useEffect(() => {
+    const checkRedirectResult = async () => {
+      try {
+        const result = await getRedirectResult(auth);
+        if (result) {
+          const user = result.user;
+          console.log("Redirect result received:", user.email);
+          
+          // Handle user profile creation/update same as popup flow
+          const userDocRef = doc(db, "users", user.uid);
+          const userDoc = await getDoc(userDocRef);
+          
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            if (!userData.skills?.length && !userData.wantsToLearn?.length) {
+              nav("/onboarding");
+              return;
+            }
+          } else {
+            await setDoc(userDocRef, {
+              name: user.displayName || "Google User",
+              email: user.email || "",
+              bio: "",
+              skills: [],
+              wantsToLearn: [],
+              createdAt: new Date().toISOString(),
+              profileComplete: false,
+            });
+            nav("/onboarding");
+            return;
+          }
+          
+          toast.success("Successfully signed in with Google!");
+        }
+      } catch (error: any) {
+        console.error("Redirect result error:", error);
+        if (error.code !== "auth/no-redirect-result") {
+          toast.error(`Sign-in error: ${error.message}`);
+        }
+      } finally {
+        setIsCheckingRedirect(false);
+      }
+    };
+
+    checkRedirectResult();
+  }, [nav]);
 
   const handleSignUp = async () => {
     if (!email || !password || !name) {
@@ -96,14 +147,71 @@ export default function Auth() {
     }
   };
 
-  // Google login handler
+  // Detect if user is on mobile device
+  const isMobile = () => {
+    return /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ||
+           (window.innerWidth <= 768);
+  };
+
+  // Google login handler with mobile-first approach
   const handleGoogleLogin = async () => {
+    if (loading || isCheckingRedirect) return;
+    
+    setLoading(true);
+    
     try {
       const provider = new GoogleAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
+      provider.addScope('email');
+      provider.addScope('profile');
       
-      // Check if user profile exists and if it's complete
+      // Use redirect for mobile devices, popup for desktop
+      if (isMobile()) {
+        console.log("Using redirect method for mobile device");
+        await signInWithRedirect(auth, provider);
+        // The redirect will handle the rest, component will remount
+        return;
+      } else {
+        console.log("Using popup method for desktop");
+        const result = await signInWithPopup(auth, provider);
+        const user = result.user;
+        
+        // Handle user profile creation/update
+        await handleGoogleUserProfile(user);
+      }
+    } catch (error: any) {
+      console.error("Google sign-in error:", error);
+      console.error("Error code:", error.code);
+      console.error("Error message:", error.message);
+      
+      if (error.code === "auth/popup-closed-by-user") {
+        toast.error("Sign-in cancelled.");
+      } else if (error.code === "auth/popup-blocked") {
+        toast.error("Pop-up blocked. Trying redirect method...");
+        // Fallback to redirect if popup is blocked
+        try {
+          await signInWithRedirect(auth, provider);
+          return;
+        } catch (redirectError: any) {
+          console.error("Redirect fallback failed:", redirectError);
+          toast.error("Failed to sign in. Please try again.");
+        }
+      } else if (error.code === "auth/configuration-not-found") {
+        toast.error("Firebase configuration error. Please check your setup.");
+      } else if (error.code === "auth/invalid-api-key") {
+        toast.error("Invalid Firebase API key.");
+      } else if (error.code === "auth/unauthorized-domain") {
+        toast.error("This domain is not authorized for Google sign-in.");
+      } else {
+        toast.error(`Failed to sign in with Google: ${error.code || error.message}`);
+      }
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Helper function to handle Google user profile creation/update
+  const handleGoogleUserProfile = async (user: any) => {
+    try {
       const userDocRef = doc(db, "users", user.uid);
       const userDoc = await getDoc(userDocRef);
       
@@ -131,23 +239,8 @@ export default function Auth() {
       
       toast.success("Successfully signed in with Google!");
     } catch (error: any) {
-      console.error("Google sign-in error:", error);
-      console.error("Error code:", error.code);
-      console.error("Error message:", error.message);
-      
-      if (error.code === "auth/popup-closed-by-user") {
-        toast.error("Sign-in cancelled.");
-      } else if (error.code === "auth/popup-blocked") {
-        toast.error("Pop-up blocked. Please allow pop-ups and try again.");
-      } else if (error.code === "auth/configuration-not-found") {
-        toast.error("Firebase configuration error. Please check your setup.");
-      } else if (error.code === "auth/invalid-api-key") {
-        toast.error("Invalid Firebase API key.");
-      } else if (error.code === "auth/unauthorized-domain") {
-        toast.error("This domain is not authorized for Google sign-in.");
-      } else {
-        toast.error(`Failed to sign in with Google: ${error.code || error.message}`);
-      }
+      console.error("Error handling Google user profile:", error);
+      toast.error("Error setting up your profile. Please try again.");
     }
   };
 
@@ -285,11 +378,13 @@ export default function Auth() {
           <div className="mt-4 sm:mt-6 text-center">
             <button
               onClick={handleGoogleLogin}
-              disabled={loading}
+              disabled={loading || isCheckingRedirect}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-black rounded-xl font-medium hover:bg-white/90 transition-colors disabled:opacity-50 mobile-tap min-h-[44px]"
             >
               <div className="h-4 w-4 sm:h-5 sm:w-5 bg-gradient-to-br from-red-500 to-yellow-500 rounded" />
-              <span className="text-sm sm:text-base">Continue with Google</span>
+              <span className="text-sm sm:text-base">
+                {isCheckingRedirect ? "Checking sign-in..." : loading ? "Signing in..." : "Continue with Google"}
+              </span>
             </button>
           </div>
 
