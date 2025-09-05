@@ -11,9 +11,10 @@ const firebaseConfig = {
 };
 
 const app = initializeApp(firebaseConfig);
+
 export const auth = getAuth(app);
 
-// Ensure authentication persistence across browser sessions
+// Set persistence to local storage so users stay logged in across browser sessions
 setPersistence(auth, browserLocalPersistence).catch((error) => {
-  console.warn('Failed to set auth persistence:', error);
+  console.error("Error setting auth persistence:", error);
 });
