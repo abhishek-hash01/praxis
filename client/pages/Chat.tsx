@@ -254,21 +254,33 @@ export default function Chat() {
                       <div
                         key={user.id}
                         onClick={() => navigate(`/chat/${user.id}`)}
-                        className="glass-card p-4 sm:p-5 flex items-center gap-4 cursor-pointer hover:bg-white/5 hover:scale-[1.02] transition-all duration-200 border border-white/10"
+                        className="group glass-card p-4 sm:p-5 flex items-center gap-4 cursor-pointer hover:bg-white/8 hover:scale-[1.01] hover:shadow-xl hover:shadow-praxis-blue/10 transition-all duration-300 ease-out border border-white/10 hover:border-white/20 active:scale-[0.99]"
                       >
                         <div className="relative">
-                          <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-white font-bold text-lg">
+                          <div className="h-12 w-12 sm:h-14 sm:w-14 rounded-xl bg-gradient-to-br from-praxis-purple via-praxis-blue to-praxis-green flex items-center justify-center text-white font-bold text-lg shadow-lg group-hover:shadow-xl transition-all duration-300">
                             {user.name.charAt(0).toUpperCase()}
                           </div>
-                          <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-praxis-green border-2 border-black"></div>
+                          <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-praxis-green border-2 border-black animate-pulse shadow-sm"></div>
                         </div>
                         <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="font-heading text-lg truncate">{user.name}</div>
-                            <div className="text-xs text-praxis-green font-medium">Online</div>
+                          <div className="flex items-center gap-3 mb-1">
+                            <div className="font-heading text-lg truncate group-hover:text-white transition-colors duration-200">{user.name}</div>
+                            <div className="flex items-center gap-1">
+                              <div className="h-2 w-2 rounded-full bg-praxis-green animate-pulse"></div>
+                              <div className="text-xs text-praxis-green font-medium">Online</div>
+                            </div>
                           </div>
-                          <div className="text-sm text-white/60 truncate leading-relaxed">
-                            {lastMessage ? lastMessage.text : "Start a conversation"}
+                          <div className="text-sm text-white/60 group-hover:text-white/80 truncate leading-relaxed transition-colors duration-200">
+                            {lastMessage ? (
+                              <span className="flex items-center gap-2">
+                                {lastMessage.fromUserId === currentUser?.uid && (
+                                  <span className="text-white/40">You:</span>
+                                )}
+                                {lastMessage.text}
+                              </span>
+                            ) : (
+                              <span className="italic">Start a conversation</span>
+                            )}
                           </div>
                         </div>
                         <div className="flex flex-col items-end gap-2 flex-shrink-0">
@@ -276,7 +288,7 @@ export default function Chat() {
                             {lastMessage ? new Date(lastMessage.sentAt.toDate ? lastMessage.sentAt.toDate() : lastMessage.sentAt).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ""}
                           </div>
                           {unreadCount > 0 && (
-                            <div className="bg-gradient-to-r from-praxis-blue to-praxis-green text-white text-xs px-2 py-1 rounded-full font-bold min-w-[20px] text-center shadow-lg">
+                            <div className="bg-gradient-to-r from-praxis-blue to-praxis-green text-white text-xs px-2 py-1 rounded-full font-bold min-w-[20px] text-center shadow-lg animate-bounce">
                               {unreadCount > 99 ? '99+' : unreadCount}
                             </div>
                           )}
@@ -314,23 +326,31 @@ export default function Chat() {
     <LoggedInLayout>
       <div className="flex flex-col h-screen">
         {/* Fixed Header */}
-        <div className="sticky top-[48px] sm:top-[56px] z-30 glass-card mx-4 mt-4 p-4 backdrop-blur-xl bg-black/80 border border-white/10">
-          <div className="flex items-center gap-3 sm:gap-4">
+        <div className="sticky top-[48px] sm:top-[56px] z-30 glass-card mx-4 mt-4 p-4 sm:p-5 backdrop-blur-xl bg-black/85 border border-white/15 shadow-xl">
+          <div className="flex items-center gap-4">
             <button 
               onClick={() => navigate('/chat')}
-              className="p-1.5 sm:p-2 rounded-lg hover:bg-white/10 transition-colors"
+              className="p-2 rounded-xl hover:bg-white/15 active:bg-white/20 transition-all duration-200 hover:scale-105 active:scale-95"
             >
-              <ArrowLeft className="h-4 w-4 sm:h-5 sm:w-5" />
+              <ArrowLeft className="h-5 w-5 text-white/80 hover:text-white transition-colors" />
             </button>
-            <div className="h-8 w-8 sm:h-10 sm:w-10 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-white font-bold text-sm sm:text-base">
-              {otherUser?.name.charAt(0).toUpperCase()}
+            <div className="relative">
+              <div className="h-10 w-10 sm:h-12 sm:w-12 rounded-xl bg-gradient-to-br from-praxis-purple via-praxis-blue to-praxis-green flex items-center justify-center text-white font-bold text-lg shadow-lg">
+                {otherUser?.name.charAt(0).toUpperCase()}
+              </div>
+              <div className="absolute -bottom-1 -right-1 h-4 w-4 rounded-full bg-praxis-green border-2 border-black animate-pulse shadow-sm"></div>
             </div>
             <div className="min-w-0 flex-1">
-              <div className="font-heading text-base sm:text-lg truncate">{otherUser?.name}</div>
+              <div className="font-heading text-lg sm:text-xl truncate mb-1">{otherUser?.name}</div>
               <div className="flex items-center gap-2">
-                <div className="h-1.5 w-1.5 sm:h-2 sm:w-2 rounded-full bg-praxis-green"></div>
-                <div className="text-xs text-praxis-green">Online</div>
+                <div className="h-2 w-2 rounded-full bg-praxis-green animate-pulse"></div>
+                <div className="text-xs text-praxis-green font-medium">Online now</div>
               </div>
+            </div>
+            <div className="flex items-center gap-2">
+              <button className="p-2 rounded-xl hover:bg-white/10 transition-colors">
+                <MessageCircle className="h-5 w-5 text-white/60" />
+              </button>
             </div>
           </div>
         </div>
@@ -345,25 +365,37 @@ export default function Chat() {
               const showAvatar = index === 0 || messages[index - 1]?.fromUserId !== m.fromUserId;
               
               return (
-                <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"} group`}>
-                  <div className={`flex items-end gap-2 max-w-[85%] sm:max-w-[80%] ${mine ? "flex-row-reverse" : "flex-row"}`}>
+                <div key={m.id} className={`flex ${mine ? "justify-end" : "justify-start"} group animate-fadeIn`}>
+                  <div className={`flex items-end gap-2 max-w-[85%] sm:max-w-[75%] lg:max-w-[70%] ${mine ? "flex-row-reverse" : "flex-row"}`}>
                     {!mine && showAvatar && (
-                      <div className="h-6 w-6 sm:h-8 sm:w-8 rounded-xl bg-gradient-to-br from-praxis-purple to-praxis-blue flex items-center justify-center text-white text-xs font-bold flex-shrink-0">
+                      <div className="h-7 w-7 sm:h-9 sm:w-9 rounded-xl bg-gradient-to-br from-praxis-purple via-praxis-blue to-praxis-green flex items-center justify-center text-white text-xs sm:text-sm font-bold flex-shrink-0 shadow-md">
                         {otherUser?.name.charAt(0).toUpperCase()}
                       </div>
                     )}
-                    {!mine && !showAvatar && <div className="w-6 sm:w-8" />}
+                    {!mine && !showAvatar && <div className="w-7 sm:w-9" />}
                     
-                    <div className={`px-3 py-2 sm:px-4 sm:py-3 rounded-2xl border transition-all duration-200 hover:scale-[1.02] ${
+                    <div className={`group/message px-4 py-3 sm:px-5 sm:py-4 rounded-2xl border transition-all duration-300 ease-out hover:scale-[1.01] hover:shadow-lg ${
                       mine 
-                        ? "bg-gradient-to-br from-praxis-blue/50 to-praxis-green/50 border-praxis-green/30 shadow-lg" 
-                        : "bg-white/8 border-white/20 backdrop-blur-sm"
+                        ? "bg-gradient-to-br from-praxis-blue/60 to-praxis-green/60 border-praxis-green/40 shadow-lg shadow-praxis-blue/10 hover:shadow-praxis-green/20" 
+                        : "bg-white/10 border-white/25 backdrop-blur-md hover:bg-white/15 hover:border-white/30"
                     }`}>
-                      <div className="text-sm leading-relaxed break-words">{m.text}</div>
-                      <div className={`text-[10px] sm:text-xs mt-1 flex items-center gap-1 ${
+                      <div className="text-sm sm:text-base leading-relaxed break-words font-medium">{m.text}</div>
+                      <div className={`text-[10px] sm:text-xs mt-2 flex items-center gap-2 ${
                         mine ? "text-white/70 justify-end" : "text-white/60"
                       }`}>
                         <span>{timestamp.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</span>
+                        {mine && (
+                          <div className="flex items-center gap-1">
+                            {m.read ? (
+                              <div className="flex -space-x-0.5">
+                                <div className="h-3 w-3 rounded-full bg-praxis-green/80 border border-white/20"></div>
+                                <div className="h-3 w-3 rounded-full bg-praxis-green border border-white/20"></div>
+                              </div>
+                            ) : (
+                              <div className="h-3 w-3 rounded-full bg-white/40 border border-white/20"></div>
+                            )}
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -430,12 +462,12 @@ export default function Chat() {
             }}
             className="fixed z-50 bottom-[76px] left-0 right-0 px-4 max-w-2xl mx-auto"
           >
-            <div className="glass-card flex items-center gap-3 p-3 focus-within:ring-2 focus-within:ring-praxis-blue/50 transition-all duration-200 border border-white/20 bg-black/60 backdrop-blur-xl">
+            <div className="glass-card flex items-center gap-3 p-4 focus-within:ring-2 focus-within:ring-praxis-blue/60 focus-within:border-praxis-blue/40 transition-all duration-300 border border-white/25 bg-black/70 backdrop-blur-xl shadow-xl hover:shadow-2xl">
               <input
                 value={input}
                 onChange={(e) => setInput(e.target.value)}
                 placeholder="Type a message..."
-                className="flex-1 bg-transparent outline-none px-3 py-2 text-sm placeholder:text-white/50"
+                className="flex-1 bg-transparent outline-none px-3 py-3 text-sm placeholder:text-white/50 text-white/90"
                 onKeyDown={(e) => {
                   if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
