@@ -159,10 +159,11 @@ export default function Auth() {
     
     setLoading(true);
     
+    const provider = new GoogleAuthProvider();
+    provider.addScope('email');
+    provider.addScope('profile');
+    
     try {
-      const provider = new GoogleAuthProvider();
-      provider.addScope('email');
-      provider.addScope('profile');
       
       // Use redirect for mobile devices, popup for desktop
       if (isMobile()) {
