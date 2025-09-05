@@ -50,12 +50,12 @@ export default function Dashboard() {
   const [connections, setConnections] = useState<Connection[]>([]);
   const [connectionRequests, setConnectionRequests] = useState<ConnectionRequest[]>([]);
   const [passedUsers, setPassedUsers] = useState<string[]>([]);
-  const { currentUser } = useAuth();
+  const { currentUser, loading: authLoading } = useAuth();
   const nav = useNavigate();
 
   useEffect(() => {
     const fetchUserProfileAndMatches = async () => {
-      if (!currentUser) return;
+      if (!currentUser || authLoading) return;
       
       try {
         // Fetch current user profile
@@ -86,9 +86,11 @@ export default function Dashboard() {
     };
 
     fetchUserProfileAndMatches();
-    
-    // Listen for connections, requests, and passed users
-    if (!currentUser) return;
+  }, [currentUser, authLoading]);
+
+  // Listen for connections, requests, and passed users
+  useEffect(() => {
+    if (!currentUser || authLoading) return;
 
     // Listen for connections
     const connectionsQuery = query(collection(db, "connections"));
@@ -139,7 +141,7 @@ export default function Dashboard() {
       unsubscribeRequests();
       unsubscribePassed();
     };
-  }, [currentUser]);
+  }, [currentUser, authLoading]);
 
   // Recalculate matches when connections or requests change
   useEffect(() => {

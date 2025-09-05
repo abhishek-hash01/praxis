@@ -53,7 +53,7 @@ export function AuthProvider({ children }: PropsWithChildren) {
     logout,
   };
 
-  return <Ctx.Provider value={value}>{!loading && children}</Ctx.Provider>
+  return <Ctx.Provider value={value}>{children}</Ctx.Provider>
 }
 export function useAuth() {
   const ctx = useContext(Ctx);
