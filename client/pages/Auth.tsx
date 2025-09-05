@@ -47,14 +47,17 @@ export default function Auth() {
       const user = userCredential.user;
       
       // Save user profile data to Firestore
-      await setDoc(doc(db, "users", user.uid), {
+      const profileData = {
         name: name,
         email: email,
         bio: "",
         skills: skills,
         wantsToLearn: wantsToLearn,
         createdAt: new Date().toISOString(),
-      });
+        profileComplete: true,
+      };
+      
+      await setDoc(doc(db, "users", user.uid), profileData);
       
       toast.success("Account created successfully! Let's get started.");
     } catch(error: any) {
