@@ -87,73 +87,77 @@ export default function Settings() {
 
   return (
     <LoggedInLayout>
-      <div className="container py-8 max-w-2xl">
-        <h1 className="font-heading text-2xl">Profile Settings</h1>
-        <p className="mt-2 text-white/70">Update your profile information</p>
+      <div className="container py-3 px-3 sm:py-8 sm:px-4 max-w-2xl mx-auto">
+        <h1 className="font-heading text-lg sm:text-2xl">Profile Settings</h1>
+        <p className="mt-2 text-white/70 text-sm sm:text-base">Update your profile information</p>
         
-        <form onSubmit={handleSubmit} className="mt-6 glass-card p-6 grid gap-6">
-          <div className="grid gap-2">
+        <form onSubmit={handleSubmit} className="mt-4 sm:mt-6 glass-card p-3 sm:p-6 space-y-4 sm:space-y-6 w-full min-w-0">
+          <div className="space-y-2 w-full">
             <label className="text-sm font-medium text-white/80">Display Name</label>
             <input
               type="text"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-praxis-blue"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 sm:px-4 outline-none focus:ring-2 focus:ring-praxis-blue mobile-tap min-h-[44px] text-sm sm:text-base"
               placeholder="Your display name"
               required
             />
           </div>
 
-          <div className="grid gap-2">
+          <div className="space-y-2 w-full">
             <label className="text-sm font-medium text-white/80">Bio</label>
             <textarea
               value={bio}
               onChange={(e) => setBio(e.target.value)}
-              className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-praxis-blue resize-none"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 sm:px-4 outline-none focus:ring-2 focus:ring-praxis-blue resize-none mobile-tap text-sm sm:text-base"
               placeholder="Tell others about yourself..."
               rows={3}
             />
           </div>
 
-          <SkillSelector
-            selectedSkills={skills}
-            onSkillsChange={setSkills}
-            label="Skills you can teach"
-            placeholder="Type to search skills..."
-            maxSkills={10}
-          />
-          <p className="text-xs text-white/50 -mt-4">What skills can you share with others?</p>
+          <div className="w-full">
+            <SkillSelector
+              selectedSkills={skills}
+              onSkillsChange={setSkills}
+              label="Skills you can teach"
+              placeholder="Type to search skills..."
+              maxSkills={10}
+            />
+            <p className="text-xs text-white/50 mt-1">What skills can you share with others?</p>
+          </div>
 
-          <SkillSelector
-            selectedSkills={wantsToLearn}
-            onSkillsChange={setWantsToLearn}
-            label="What you want to learn"
-            placeholder="Type to search skills..."
-            maxSkills={10}
-          />
-          <p className="text-xs text-white/50 -mt-4">What would you like to learn from others?</p>
+          <div className="w-full">
+            <SkillSelector
+              selectedSkills={wantsToLearn}
+              onSkillsChange={setWantsToLearn}
+              label="What you want to learn"
+              placeholder="Type to search skills..."
+              maxSkills={10}
+            />
+            <p className="text-xs text-white/50 mt-1">What would you like to learn from others?</p>
+          </div>
 
-          <div className="flex gap-3 pt-4">
+          <div className="pt-2 sm:pt-4 w-full">
             <button
               type="submit"
               disabled={saving}
-              className="btn-primary flex-1"
+              className="btn-primary w-full mobile-tap"
             >
               {saving ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </form>
 
-        <div className="mt-6 glass-card p-6">
-          <h2 className="font-heading text-lg mb-4">Account Information</h2>
-          <div className="grid gap-3">
-            <div className="flex justify-between items-center">
-              <span className="text-white/70">Email</span>
-              <span className="text-sm">{currentUser?.email}</span>
+        <div className="mt-4 sm:mt-6 glass-card p-3 sm:p-6 w-full min-w-0">
+          <h2 className="font-heading text-base sm:text-lg mb-3 sm:mb-4">Account Information</h2>
+          <div className="space-y-3">
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-white/70 text-sm">Email</span>
+              <span className="text-xs sm:text-sm truncate max-w-[60%]">{currentUser?.email}</span>
             </div>
-            <div className="flex justify-between items-center">
-              <span className="text-white/70">Account Created</span>
-              <span className="text-sm">
+            <div className="flex justify-between items-center gap-2">
+              <span className="text-white/70 text-sm">Account Created</span>
+              <span className="text-xs sm:text-sm">
                 {userProfile?.createdAt ? new Date(userProfile.createdAt).toLocaleDateString() : "Unknown"}
               </span>
             </div>

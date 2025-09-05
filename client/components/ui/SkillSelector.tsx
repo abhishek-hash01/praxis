@@ -72,21 +72,21 @@ export default function SkillSelector({
   };
 
   return (
-    <div className="grid gap-2">
+    <div className="space-y-2 w-full">
       {label && <label className="text-sm font-medium text-white/80">{label}</label>}
       
-      <div className="relative">
-        <div className="bg-white/5 border border-white/10 rounded-xl px-4 py-3 min-h-[48px] flex flex-wrap gap-2 items-center">
+      <div className="relative w-full">
+        <div className="w-full bg-white/5 border border-white/10 rounded-xl px-3 py-3 sm:px-4 min-h-[48px] flex flex-wrap gap-2 items-center">
           {selectedSkills.map((skill) => (
             <span
               key={skill}
-              className="inline-flex items-center gap-1 px-2 py-1 bg-praxis-blue/20 border border-praxis-blue/40 rounded-md text-xs text-praxis-blue"
+              className="inline-flex items-center gap-1 px-2 py-1 bg-praxis-blue/20 border border-praxis-blue/40 rounded-md text-xs text-praxis-blue flex-shrink-0"
             >
-              {skill}
+              <span className="truncate max-w-[120px]">{skill}</span>
               <button
                 type="button"
                 onClick={() => removeSkill(skill)}
-                className="ml-1 text-praxis-blue/70 hover:text-praxis-blue"
+                className="ml-1 text-praxis-blue/70 hover:text-praxis-blue mobile-tap flex-shrink-0"
               >
                 ×
               </button>
@@ -101,7 +101,7 @@ export default function SkillSelector({
             onKeyDown={handleKeyDown}
             onFocus={() => inputValue && setShowSuggestions(true)}
             placeholder={selectedSkills.length === 0 ? placeholder : ""}
-            className="flex-1 bg-transparent outline-none text-white placeholder-white/50 min-w-[120px]"
+            className="flex-1 bg-transparent outline-none text-white placeholder-white/50 min-w-[80px] text-sm sm:text-base mobile-tap"
             disabled={selectedSkills.length >= maxSkills}
           />
         </div>
@@ -116,7 +116,7 @@ export default function SkillSelector({
                 key={skill}
                 type="button"
                 onClick={() => addSkill(skill)}
-                className="w-full px-4 py-2 text-left text-white hover:bg-white/10 first:rounded-t-xl last:rounded-b-xl"
+                className="w-full px-3 py-2 sm:px-4 text-left text-white hover:bg-white/10 first:rounded-t-xl last:rounded-b-xl mobile-tap text-sm sm:text-base"
               >
                 {skill}
               </button>
