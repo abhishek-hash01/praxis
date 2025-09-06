@@ -239,7 +239,6 @@ export default function Auth() {
       }
       
       toast.success("Successfully signed in with Google!");
-      nav("/dashboard");
     } catch (error: any) {
       console.error("Error handling Google user profile:", error);
       toast.error("Error setting up your profile. Please try again.");
