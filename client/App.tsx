@@ -10,7 +10,7 @@ import NotFound from "./pages/NotFound";
 import Auth from "./pages/Auth";
 import Onboarding from "./pages/Onboarding";
 import Dashboard from "./pages/Dashboard";
-import Chat from "./pages/Chat";
+import Chat from "./pages/Chat.tsx";
 import Profile from "./pages/Profile";
 import Settings from "./pages/Settings";
 import Connections from "./pages/Connections";
