@@ -1,11 +1,13 @@
 import SiteHeader from "@/components/layout/SiteHeader";
 import SiteFooter from "@/components/layout/SiteFooter";
-import { Link } from "react-router-dom";
+import { Link, Navigate } from "react-router-dom";
 import { CheckCircle2, MessageSquare, Sparkles } from "lucide-react";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 export default function Index() {
+  const { currentUser } = useAuth();
   const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
@@ -15,6 +17,11 @@ export default function Index() {
     window.addEventListener('mousemove', handleMouseMove);
     return () => window.removeEventListener('mousemove', handleMouseMove);
   }, []);
+
+  // If user is already logged in, redirect to dashboard
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },

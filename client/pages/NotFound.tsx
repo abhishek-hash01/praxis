@@ -1,8 +1,10 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, Navigate } from "react-router-dom";
 import { useEffect } from "react";
+import { useAuth } from "@/context/AuthContext";
 
 const NotFound = () => {
   const location = useLocation();
+  const { currentUser } = useAuth();
 
   useEffect(() => {
     console.error(
@@ -10,6 +12,11 @@ const NotFound = () => {
       location.pathname,
     );
   }, [location.pathname]);
+
+  // If user is logged in, redirect to dashboard instead of showing 404
+  if (currentUser) {
+    return <Navigate to="/dashboard" replace />;
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center">
